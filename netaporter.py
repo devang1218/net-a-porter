@@ -19,9 +19,12 @@ app = Flask(__name__)
        
 #website_id's other than NAP    
 l = ['5da94f4e6d97010001f81d72', '5da94f270ffeca000172b12e', '5d0cc7b68a66a100014acdb0', '5da94ef80ffeca000172b12c', '5da94e940ffeca000172b12a']
+@app.route("/",methods = ["GET"])
+def get_function():
+    return("Hello World")
 
-@app.route("/",methods = ["POST"])
-def discount_greater_n():
+@app.route("/netaporter",methods = ["POST"])
+def post_function():
     query = request.get_json()
 
 #1. NAP products where discount is greater than n%
@@ -95,7 +98,7 @@ def discount_greater_n():
         
         if "filters" in query:
             if query["filters"][0]["operand1"]=="brand.name" and query["filters"][0]["operator"]=="==":
-                for i in range(52383):
+                for i in range(len(df["price"])):
                     if df["brand"][i]["name"] == query["filters"][0]["operand2"] and (i not in p) and df["similar_products"][i]["meta"]["total_results"] >0:
                         for j in l:
                             if df["similar_products"][i]["website_results"][j]["knn_items"]!=[] and df["similar_products"][i]["website_results"][j]["knn_items"][0]["_source"]["price"]["basket_price"]["value"]<df["price"][i]["basket_price"]["value"]:
@@ -103,7 +106,7 @@ def discount_greater_n():
                                 break
             return jsonify({'expensive_list':nap_id})
         else:
-            for i in range(52383):
+            for i in range(len(df["price"])):
                 if (i not in p) and df["similar_products"][i]["meta"]["total_results"] >0:
                     for j in l:
                         if df["similar_products"][i]["website_results"][j]["knn_items"]!=[] and df["similar_products"][i]["website_results"][j]["knn_items"][0]["_source"]["price"]["basket_price"]["value"]<df["price"][i]["basket_price"]["value"]:
@@ -123,21 +126,21 @@ def discount_greater_n():
         opr = query["filters"][0]["operand2"]
         opr2 = query["filters"][1]["operand2"]
         if query["filters"][0]["operator"]==">":
-            for i in range(52383):
+            for i in range(len(df["price"])):
                 if (i not in p) and df["similar_products"][i]["website_results"][opr2]["knn_items"]!=[]:
                     comp_basket_price = df["similar_products"][i]["website_results"][opr2]["knn_items"][0]["_source"]["price"]["basket_price"]["value"]
                     if (((comp_basket_price*opr)/100)+comp_basket_price) < df["price"][i]["basket_price"]["value"] :
                         nap_id.append(str(df["_id"][i]))
 
         if query["filters"][0]["operator"]=="==":
-            for i in range(52383):
+            for i in range(len(df["price"])):
                 if (i not in p) and df["similar_products"][i]["website_results"][opr2]["knn_items"]!=[]:
                     comp_basket_price = df["similar_products"][i]["website_results"][opr2]["knn_items"][0]["_source"]["price"]["basket_price"]["value"]
                     if (((comp_basket_price*opr)/100)+comp_basket_price) == df["price"][i]["basket_price"]["value"] :
                         nap_id.append(str(df["_id"][i]))
 
         if query["filters"][0]["operator"]=="<":
-            for i in range(52383):
+            for i in range(len(df["price"])):
                 if (i not in p) and df["similar_products"][i]["website_results"][opr2]["knn_items"]!=[]:
                     comp_basket_price = df["similar_products"][i]["website_results"][opr2]["knn_items"][0]["_source"]["price"]["basket_price"]["value"]
                     if (((comp_basket_price*opr)/100)+comp_basket_price) > df["price"][i]["basket_price"]["value"] :
