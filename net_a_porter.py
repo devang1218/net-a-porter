@@ -16,14 +16,6 @@ app = Flask(__name__)
 
 CORS(app)
 
-# def init_files(dump_path = 'dumps/netaporter_gb.json'):
-#     if dump_path.split('/')[0] not in os.listdir():
-#         os.mkdir(dump_path.split('/')[0])
-#     if os.path.exists(dump_path):
-#         pass
-#     else:
-#         gdown.download(url = url, output = dump_path, quiet=False)
-
 def prepare_dataset(path = 'https://drive.google.com/open?id=19r_vn0vuvHpE-rJpFHvXHlMvxa8UOeom/netaporter_gb.json'):
     product_json=[]
     with open(path) as fp:
@@ -31,9 +23,6 @@ def prepare_dataset(path = 'https://drive.google.com/open?id=19r_vn0vuvHpE-rJpFH
             product_json.append(json.loads(product))
     df=pd.read_json(path,lines=True,orient='columns')
     return df
-
-# GETTING DATASET this function will download the dataset
-# init_files('dumps/netaporter_gb.json')
 
 # PREPARING DATASET
 df = prepare_dataset('dumps/netaporter_gb.json')
