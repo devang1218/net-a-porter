@@ -8,9 +8,9 @@ import gdown
 import flask
 import io
 import os
-​
+
 url = 'https://drive.google.com/a/greendeck.co/uc?id=19r_vn0vuvHpE-rJpFHvXHlMvxa8UOeom&export=download'
-​
+
 # Create Flask application
 app = flask.Flask(__name__)
 CORS(app)
@@ -146,7 +146,6 @@ def post_function():
                         nap_id.append(str(df["_id"][i]))
         
         return jsonify({"competition_discount_diff_list":nap_id})
-​
 
 def init_files(dump_path = 'dumps/netaporter_gb.json'):
     if dump_path.split('/')[0] not in os.listdir():
@@ -155,7 +154,7 @@ def init_files(dump_path = 'dumps/netaporter_gb.json'):
         pass
     else:
         gdown.download(url = url, output = dump_path, quiet=False)
-​
+
 def prepare_dataset(path = 'dumps/netaporter_gb.json'):
     df = pd.read_json(path)
 
@@ -164,7 +163,7 @@ if __name__ == '__main__':
     '''MAKE SURE YOU HAVE 'gdown' LIBRARY IN YOUR 'requirements.txt' TO DOWNLOAD FILE FROM Gdrive.'''
     # GETTING DATASET this function will download the dataset
     init_files('dumps/netaporter_gb.json') 
-    
+
     # PREPARING DATASET
     prepare_dataset('dumps/netaporter_gb.json')
     
