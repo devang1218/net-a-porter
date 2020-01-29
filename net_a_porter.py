@@ -12,7 +12,7 @@ import os
 url = 'https://drive.google.com/a/greendeck.co/uc?id=19r_vn0vuvHpE-rJpFHvXHlMvxa8UOeom&export=download'
 
 # Create Flask application
-app = flask.Flask(__name__)
+app = Flask(__name__)
 CORS(app)
 
 #website_id's other than NAP    
@@ -166,6 +166,6 @@ if __name__ == '__main__':
 
     # PREPARING DATASET
     prepare_dataset('dumps/netaporter_gb.json')
-    
+
     # RUNNNING FLASK APP
     app.run(debug=True, host = '0.0.0.0', port=5000)
