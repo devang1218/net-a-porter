@@ -1,1 +1,1 @@
-web: gunicorn netaporter:app
+web: gunicorn app:netaporter
