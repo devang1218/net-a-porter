@@ -13,6 +13,7 @@ url = 'https://drive.google.com/a/greendeck.co/uc?id=19r_vn0vuvHpE-rJpFHvXHlMvxa
 
 # Create Flask application
 app = Flask(__name__)
+
 CORS(app)
 
 #website_id's other than NAP    
@@ -157,7 +158,8 @@ def init_files(dump_path = 'dumps/netaporter_gb.json'):
 
 def prepare_dataset(path = 'dumps/netaporter_gb.json'):
     df = pd.read_json(path)
-
+    return df
+    
 # RUN FLASK APPLICATION
 if __name__ == '__main__':
     '''MAKE SURE YOU HAVE 'gdown' LIBRARY IN YOUR 'requirements.txt' TO DOWNLOAD FILE FROM Gdrive.'''
@@ -165,7 +167,7 @@ if __name__ == '__main__':
     init_files('dumps/netaporter_gb.json') 
 
     # PREPARING DATASET
-    prepare_dataset('dumps/netaporter_gb.json')
+    df = prepare_dataset('dumps/netaporter_gb.json')
 
     # RUNNNING FLASK APP
     app.run(debug=True, host = '0.0.0.0', port=5000)
