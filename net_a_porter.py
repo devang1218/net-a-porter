@@ -9,14 +9,14 @@ import flask
 import io
 import os
 
-url = 'https://drive.google.com/a/greendeck.co/uc?id=19r_vn0vuvHpE-rJpFHvXHlMvxa8UOeom&export=download'
+url = 'https://drive.google.com/open?id=19r_vn0vuvHpE-rJpFHvXHlMvxa8UOeom'
 
 # Create Flask application
 app = Flask(__name__)
 
 CORS(app)
 
-def init_files(dump_path = 'dumps/netaporter_gb.json'):
+def init_files(dump_path = 'dumps/netaporter_gb_similar.json'):
     if dump_path.split('/')[0] not in os.listdir():
         os.mkdir(dump_path.split('/')[0])
     if os.path.exists(dump_path):
@@ -24,20 +24,20 @@ def init_files(dump_path = 'dumps/netaporter_gb.json'):
     else:
         gdown.download(url = url, output = dump_path, quiet=False)
 
-def prepare_dataset(path = 'dumps/netaporter_gb.json'):
+def prepare_dataset(path = 'dumps/netaporter_gb_similar.json'):
     product_json=[]
-    with open('dumps/netaporter_gb.json') as fp:
+    with open('dumps/netaporter_gb_similar.json') as fp:
         for product in fp.readlines():
             product_json.append(json.loads(product))
-    df=pd.read_json("dumps/netaporter_gb.json",lines=True,orient='columns')
+    df=pd.read_json("dumps/netaporter_gb_similar.json",lines=True,orient='columns')
+    print(df)
     return df
 
 # GETTING DATASET this function will download the dataset
-init_files('dumps/netaporter_gb.json')
+init_files('dumps/netaporter_gb_similar.json')
 
 # PREPARING DATASET
-df = prepare_dataset('dumps/netaporter_gb.json')
-
+df = prepare_dataset('dumps/netaporter_gb_similar.json')
 
 #website_id's other than NAP    
 l = ['5da94f4e6d97010001f81d72', '5da94f270ffeca000172b12e', '5d0cc7b68a66a100014acdb0', '5da94ef80ffeca000172b12c', '5da94e940ffeca000172b12a']
@@ -176,6 +176,5 @@ def post_function():
 # RUN FLASK APPLICATION
 if __name__ == '__main__':
     '''MAKE SURE YOU HAVE 'gdown' LIBRARY IN YOUR 'requirements.txt' TO DOWNLOAD FILE FROM Gdrive.'''
-    
     # RUNNNING FLASK APP
     app.run(debug=True, host = '0.0.0.0', port=5000)
